@@ -16,63 +16,35 @@ pwmM2 = machine.PWM(machine.Pin(5))  #EN-B
 def M_left(speed):
     # Fremad
     if speed >= 0:
+        speed2 = speed * 0.9
         IN1.on()
         IN2.off()
-        pwmM1.duty_u16(int(65536 * speed))
-        print("M1 is moving forward")
+        pwmM1.duty_u16(int(65536 * speed2))
 
     # # Bagud
     elif speed <= 0:
+        speed2 = speed * 0.9
         IN1.off()
         IN2.on()
-        pwmM1.duty_u16(int(65536 * speed))
-        print("M2 is moving backwards")
+        pwmM1.duty_u16(int(65536 * (speed2 * -1)))
 
 def M_right(speed):
     # Fremad
     if speed >= 0:
+        speed2 = speed * 0.9
         IN3.on()
         IN4.off()
-        pwmM2.duty_u16(int(65536 * speed))
-        print("M1 is moving forward")
+        pwmM2.duty_u16(int(65536 * speed2))
 
     # Bagud
     elif speed <= 0:
+        speed2 = speed * 0.9
         IN3.off()
         IN4.on()
-        pwmM2.duty_u16(int(65536 * speed))
-        print("M2 is moving backwards")
+        pwmM2.duty_u16(int(65536 * (speed2 * -1)))
 
 def Mstop():
     IN1.off()
     IN2.off()
     IN3.off()
     IN4.off()
-
-"""
-# Test
-def M1(direction):
-    # Forwards
-    if direction >= 0:
-        direc = "Forward"
-        print(f"Motor 1 is moving {direc}.")
-
-    # Backwards
-    elif direction <= 0:
-        direc = "Backward"
-        print(f"Motor 1 is moving {direc}.")
-
-def M2(direction):
-    # Forwards
-    if direction >= 0:
-        direc = "Forward"
-        print(f"Motor 2 is moving {direc}.")
-
-    # Backwards
-    elif direction <= 0:
-        direc = "Backward"
-        print(f"Motor 2 is moving {direc}.")
-
-def Mstop():
-    print("Car is stopped.")
-"""
