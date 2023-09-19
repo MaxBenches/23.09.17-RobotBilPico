@@ -2,9 +2,10 @@ import blink
 import UDP
 import motor
 
+
 def main():
     # UDP setup has been tested and works
-    sock, UDP_IP, UDP_PORT = UDP.UDP_setup("0.0.0.0", 5005, "BenchNet", "happyjungle592")
+    sock, UDP_IP, UDP_PORT = UDP.UDP_setup("0.0.0.0", 5005, "ITEK 2nd", "2nd_Semester_F23v")
     sock.bind((UDP_IP, UDP_PORT))
     blink.blink_pico(3)
 
@@ -64,5 +65,6 @@ def main():
         motor.pwmM2.duty_u16(pwm_duty_right)
 
         print(left_speed, right_speed, x_axis)
+
 
 main()
