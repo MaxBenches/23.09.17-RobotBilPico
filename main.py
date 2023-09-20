@@ -1,6 +1,8 @@
 import blink
 import UDP
 import motor
+import gear
+
 
 
 def main():
@@ -9,20 +11,25 @@ def main():
     sock.bind((UDP_IP, UDP_PORT))
     blink.blink_pico(3)
 
+
     while True:
         message = UDP.msg_receive(sock, 1024, "utf-8")
         message_new = message.split(":")
 
-        left_trig = float(message_new[0])   # Controls backward movement
-        right_trig = float(message_new[1])  # Controls forward movement
-        x_axis = float(message_new[2])      # This becomes the turning factor
+        left_trig = float(message_new[0])           # Controls backward movement
+        right_trig = float(message_new[1])          # Controls forward movement
+        x_axis_right = float(message_new[2])        # This becomes the turning factor
+        y_axis_right = float(message_new[3])          # Used to change gears
+        print(y_axis_right)
 
         # Initialize motor speeds
         left_speed = 0
         right_speed = 0
 
-        # Speed factor
-        speed_scale = .9
+        # Speed factor - To scale the dutycycle
+        speed_scale = gear.change_gear(y_axis_right)
+        print(f"Speed scale: {speed_scale}")
+
 
         # Check if either trigger is pressed to set motor speed
         if right_trig > 0:
@@ -34,16 +41,18 @@ def main():
             left_speed = -left_trig * speed_scale
             right_speed = -left_trig * speed_scale
 
-        # Adjust left and right motor speeds based on turning factor (x_axis)
+        # Adjust left and right motor speeds based on turning factor (x_axis_right)
         if right_trig > 0 or left_trig > 0:
-            left_speed -= x_axis * 1.5      # Times 1.5 to adjust speed of turn
-            right_speed += x_axis * 1.5     # Times 1.5 to adjust speed of turn
+            left_speed -= x_axis_right * 1.5      # Times 1.5 to adjust speed of turn
+            right_speed += x_axis_right * 1.5     # Times 1.5 to adjust speed of turn
 
         # Clip motor speeds to the range [-1, 1]
         # This is done to ensure that the values
         # provided to the variables and therefore
         # the speed of the motors, are within
-        # an appropriately valid range
+        # an appropriately valid range - If missing
+        # the values of the variables goes over 1
+        # and fucks up the steering of the car
         left_speed = max(-1, min(1, left_speed))
         right_speed = max(-1, min(1, right_speed))
 
@@ -64,7 +73,7 @@ def main():
         motor.pwmM1.duty_u16(pwm_duty_left)
         motor.pwmM2.duty_u16(pwm_duty_right)
 
-        print(left_speed, right_speed, x_axis)
+        print(left_speed, right_speed, x_axis_right)
 
 
 main()
