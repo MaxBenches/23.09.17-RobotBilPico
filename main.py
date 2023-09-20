@@ -1,16 +1,15 @@
-import blink
 import UDP
 import motor
 import gear
-
-
+import blink
 
 def main():
     # UDP setup has been tested and works
-    sock, UDP_IP, UDP_PORT = UDP.UDP_setup("0.0.0.0", 5005, "ITEK 2nd", "2nd_Semester_F23v")
+    sock, UDP_IP, UDP_PORT = UDP.UDP_setup("0.0.0.0", 5005, "BenchNet", "happyjungle592")
     sock.bind((UDP_IP, UDP_PORT))
     blink.blink_pico(3)
 
+    motor.pwm_freq(1000, 1000)
 
     while True:
         message = UDP.msg_receive(sock, 1024, "utf-8")
@@ -19,17 +18,16 @@ def main():
         left_trig = float(message_new[0])           # Controls backward movement
         right_trig = float(message_new[1])          # Controls forward movement
         x_axis_right = float(message_new[2])        # This becomes the turning factor
-        y_axis_right = float(message_new[3])          # Used to change gears
-        print(y_axis_right)
+        button_x = int(message_new[3])              # Used for changing gear down
+        button_y = int(message_new[4])              # Used for changing gear up
 
         # Initialize motor speeds
         left_speed = 0
         right_speed = 0
 
         # Speed factor - To scale the dutycycle
-        speed_scale = gear.change_gear(y_axis_right)
+        speed_scale = gear.change_gear(button_x, button_y)
         print(f"Speed scale: {speed_scale}")
-
 
         # Check if either trigger is pressed to set motor speed
         if right_trig > 0:
@@ -64,7 +62,6 @@ def main():
         else:
             motor.stop_motors()
 
-
         # Set PWM duty cycle based on scaled speed
         # This is done to control the dutycycle
         # (speed) of the wheels, when turning
@@ -72,8 +69,5 @@ def main():
         pwm_duty_right = int(65536 * abs(right_speed))
         motor.pwmM1.duty_u16(pwm_duty_left)
         motor.pwmM2.duty_u16(pwm_duty_right)
-
-        print(left_speed, right_speed, x_axis_right)
-
 
 main()

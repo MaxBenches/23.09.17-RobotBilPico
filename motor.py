@@ -12,9 +12,10 @@ IN4 = machine.Pin(3, machine.Pin.OUT)   # IN4 on = BACKWARD
 pwmM1 = machine.PWM(machine.Pin(4))  #EN-A
 pwmM2 = machine.PWM(machine.Pin(5))  #EN-B
 
-# PWM Frequency
-pwmM1.freq(2000)
-pwmM2.freq(2000)
+def pwm_freq(freq1, freq2):
+    # PWM Frequency
+    pwmM1.freq(freq1)
+    pwmM2.freq(freq2)
 
 """ FUNCTIONS """
 # Stops both motors
