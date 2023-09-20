@@ -41,10 +41,3 @@ def backward(speed):
     pwmM1.duty_u16(int(65536 * speed))     # Left Speed
     pwmM2.duty_u16(int(65536 * speed))     # Right Speed
 
-def turn_left(speed, slowdown):
-    IN1.on()
-    IN2.off()
-    IN3.off()
-    IN4.off()
-    pwmM1.duty_u16(int(65536 * speed))     # Left Speed
-    pwmM2.duty_u16(int(65536 * (speed - slowdown)))     # Right Speed
