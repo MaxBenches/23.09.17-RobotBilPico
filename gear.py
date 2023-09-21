@@ -14,14 +14,14 @@ def change_gear(button_x, button_y):
     global index
     global speed_factor
     if button_y == 1:
-        display.display_number(1)
+        display.display_number(0)
         if index == 1:
             pass
         else:
             index += 1
             speed_factor = speeds[index]
     if button_x == 1:
-        display.display_number(0)
+        display.display_number(1)
         if index == 0:
             pass
         else:

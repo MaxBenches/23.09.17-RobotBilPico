@@ -17,17 +17,8 @@ pins = [seg_A, seg_B, seg_C, seg_D, seg_E, seg_F, seg_G]
 # Index the list to display the correct number.
 
 # numbers = [zero, one, two, three, four, five, six, seven, eight, nine, clear display]
-numbers = [[1, 1, 1, 1, 1, 1, 0],
-           [0, 1, 1, 0, 0, 0, 0],
-           [1, 1, 0, 1, 1, 0, 1],
-           [1, 1, 1, 1, 0, 0, 1],
-           [0, 1, 1, 0, 0, 1, 1],
-           [1, 0, 1, 1, 0, 1, 1],
-           [1, 0, 1, 1, 1, 1, 1],
-           [1, 1, 1, 0, 0, 0, 0],
-           [1, 1, 1, 1, 1, 1, 1],
-           [1, 1, 1, 0, 0, 1, 1],
-           [0, 0, 0, 0, 0, 0, 0]]
+numbers = [[1, 0, 1, 1, 0, 1, 1],
+           [0, 1, 1, 0, 1, 1, 1]]
 
 def display_number(number_to_display):
     pin = 0
